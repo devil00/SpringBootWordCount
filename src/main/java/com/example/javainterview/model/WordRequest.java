@@ -4,15 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class WordRequest {
-    @NotEmpty
+    @NotBlank
+    @NotNull
     private String word;
-
-    public WordRequest(@NotEmpty String word) {
-        this.word = word;
-    }
 }

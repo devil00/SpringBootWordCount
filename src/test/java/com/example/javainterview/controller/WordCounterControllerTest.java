@@ -24,14 +24,14 @@ class WordCounterControllerTest {
 
     @Test
     public void testAddWord() throws Exception {
-        mvc.perform(post("/add")
+        mvc.perform(post("/word/add")
                 .content(asJsonString(new WordRequest("hello hello world")))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isCreated());
     }
 
     @Test
     public void testGetWord() throws Exception {
-        mvc.perform(get("/get-count/hello").contentType(MediaType.APPLICATION_JSON_VALUE)).andDo(val -> log.info(val)).andExpect(status().isOk())
+        mvc.perform(get("/word/get-count/hello").contentType(MediaType.APPLICATION_JSON_VALUE)).andDo(val -> log.info(val)).andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.word").value("hello"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.count").value("2"));
     }

@@ -12,12 +12,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+
 @Validated
 @RestController
+@RequestMapping(value = "/word")
 public class WordCounterController {
     private final WordCounterService wordCounterService;
 
@@ -31,8 +34,11 @@ public class WordCounterController {
     }
 
     @PostMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> receiveWord(@RequestBody WordRequest wordRequest) {
-        System.out.println("---------- empty: " + wordRequest.getWord().isEmpty());
+    public ResponseEntity<?> receiveWord(@Valid @ValidWordRequest @RequestBody WordRequest wordRequest) {
+        // TODO: Need to get the validator working.
+        if (wordRequest.getWord() == null || wordRequest.getWord().isBlank()) {
+            return new ResponseEntity("Invalid word", HttpStatus.BAD_REQUEST);
+        }
         wordCounterService.addWord(wordRequest.getWord());
         return new ResponseEntity<>(wordRequest.getWord(), HttpStatus.CREATED);
     }
